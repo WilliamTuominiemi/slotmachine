@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+	<body>
+		<script src="https://threejs.org/build/three.js"></script>
+		<script>
+			const scene = new THREE.Scene();
+			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+            const geometry = new THREE.CylinderGeometry( 3,3, 4, 6 );
+            const material = new THREE.MeshLambertMaterial ( {color: 0xffffff} );
+            const cylinder1 = new THREE.Mesh( geometry, material );
+
+            cylinder1.rotation.x = 90*0.0174532925
+            cylinder1.rotation.z = 90*0.0174532925 
+            cylinder1.position.x = -5
+
+            const cylinder2 = new THREE.Mesh( geometry, material );
+
+            cylinder2.rotation.x = 90*0.0174532925
+            cylinder2.rotation.z = 90*0.0174532925 
+            cylinder2.position.x = 0
+
+            const cylinder3 = new THREE.Mesh( geometry, material );
+
+            cylinder3.rotation.x = 90*0.0174532925
+            cylinder3.rotation.z = 90*0.0174532925 
+            cylinder3.position.x = 5
+
+            const light = new THREE.PointLight( 0xffffff, 1 );
+            light.position.set( 10, 10, 10 );
+            scene.add( light );
+
+            const pointlight = new THREE.AmbientLight( 0x404040 ); // soft white light
+            scene.add( pointlight );
+            scene.add( cylinder1 );
+            scene.add( cylinder2 );
+            scene.add( cylinder3 );
+
+			camera.position.z = 10;
+			camera.position.y = 1;
+            camera.rotation.x = -5*0.0174532925 
+
+			function animate() {
+				requestAnimationFrame( animate );
+
+				renderer.render( scene, camera );
+				cylinder1.rotation.x += 0.01;
+                cylinder2.rotation.x += 0.02;
+                cylinder3.rotation.x += 0.005;
+
+			};
+
+			animate();
+		</script>
+	</body>
+</html>
