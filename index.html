@@ -17,10 +17,23 @@
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-            const texture = new THREE.TextureLoader().load( 'texture.png' );
+            // fetch('http://localhost:3000/',{
+            //     method: 'GET',
+            //     mode: 'cors',
+            //     cache: 'no-cache',
+            //     credentials: 'same-origin',
+            //     headers: {
+            //     'Content-Type': 'application/json'
+            //     },
+            //     referrerPolicy: 'no-referrer',
+            // })
+            // .then((response) => response.json())
+            // .then((data) => console.log(data));
+
+            const texture = new THREE.TextureLoader().load( 'http://localhost:3000/' );
 
             const geometry = new THREE.CylinderGeometry( 3,3, 4, 6 );
-            const material = new THREE.MeshLambertMaterial ( {color: 0xffffff} );
+            const material = new THREE.MeshLambertMaterial ( {map: texture} );
             const cylinder1 = new THREE.Mesh( geometry, material );
 
             cylinder1.rotation.x = 90*0.0174532925
