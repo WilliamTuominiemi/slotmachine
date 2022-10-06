@@ -51,10 +51,14 @@
             scene.add( cylinder3 );
 
 			camera.position.z = 10;
-			camera.position.y = 1;
-            camera.rotation.x = -5*0.0174532925 
+			camera.position.y = 7;
+            camera.rotation.x = -30*0.0174532925 
 
             let rollSlots = false
+            let stopping = false
+            let rand1
+            let rand2
+            let rand3
 
 			function animate() {
 				requestAnimationFrame( animate );
@@ -63,19 +67,58 @@
 				
                 document.addEventListener('mousedown', onMouseDown, false);
 
+                // console.log([cylinder1.rotation.x, cylinder2.rotation.x, cylinder3.rotation.x])
+
                 if(rollSlots) {
-                    cylinder1.rotation.x += 0.01;
-                    cylinder2.rotation.x += 0.02;
-                    cylinder3.rotation.x += 0.005;
+                    cylinder1.rotation.x += rand1*0.2+.05;
+                    cylinder2.rotation.x += rand2*0.2+.05;
+                    cylinder3.rotation.x += rand3*0.2+.05;
+
+                    if(cylinder1.rotation.x>=2*Math.PI) cylinder1.rotation.x = 0
+                    if(cylinder2.rotation.x>=2*Math.PI) cylinder2.rotation.x = 0
+                    if(cylinder3.rotation.x>=2*Math.PI) cylinder3.rotation.x = 0
+                } else {
+                    if(stopping) {
+                        if(cylinder1.rotation.x < Math.round((cylinder1.rotation.x))) {
+                            cylinder1.rotation.x += 0.01
+                        } else if(cylinder1.rotation.x > Math.round((cylinder1.rotation.x))) {
+                            cylinder1.rotation.x -= 0.01
+                        }
+
+                        if(cylinder2.rotation.x < Math.round((cylinder2.rotation.x))) {
+                            cylinder2.rotation.x += 0.01
+                        } else if(cylinder2.rotation.x > Math.round((cylinder2.rotation.x))) {
+                            cylinder2.rotation.x -= 0.01
+                        }
+
+                        
+                        if(cylinder3.rotation.x < Math.round((cylinder3.rotation.x))) {
+                            cylinder3.rotation.x += 0.01
+                        } else if(cylinder3.rotation.x > Math.round((cylinder3.rotation.x))) {
+                            cylinder3.rotation.x -= 0.01
+                        }
+                    }  else{
+                        cylinder1.rotation.x = Math.round((cylinder1.rotation.x))
+                        cylinder2.rotation.x = Math.round((cylinder2.rotation.x))
+                        cylinder3.rotation.x = Math.round((cylinder3.rotation.x))
+                    }
                 }
 			};
 
             function roll() {
-                if(!rollSlots){
+                if(!rollSlots && !stopping){
                     rollSlots = true
+                    stopping = false
+                    rand1 = Math.random()
+                    rand2 = Math.random()
+                    rand3 = Math.random()
                 setTimeout(function () {
+                    stopping = true
                     rollSlots = false
-                }, 3000);
+                    setTimeout(function () {
+                        stopping = false
+                    }, 1000);     
+                }, 2000);
                 }                                
             }
 
@@ -84,7 +127,7 @@
             function onMouseDown(e) {
                 roll()
             }
-            
+
 		</script>
         <button id="PAW" class="pauseButton">Pause</button>
 	</body>
