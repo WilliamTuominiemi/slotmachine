@@ -17,7 +17,7 @@
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-            const texture = new THREE.TextureLoader().load( 'http://localhost:3000/' );
+            const texture = new THREE.TextureLoader().load( 'http://localhost:8080/' );
 
             const geometry = new THREE.CylinderGeometry( 3,3, 4, 6 );
             const material = new THREE.MeshLambertMaterial ( {map: texture} );
