@@ -4,7 +4,7 @@ const port = 3000
 
 const fs = require('fs')
 const path = require('path')
-const dirPath = path.join(__dirname, '/texture.png')
+const dirPath = path.join(__dirname, '/texture1.png')
 
 const cors = require('cors')
 const corsOptions = {
@@ -16,7 +16,6 @@ const corsOptions = {
 app.use(cors(corsOptions)) // Use this after the variable declaration
 
 app.get('/', (req, res) => {
-    console.log(__dirname + '/texture.png')
     res.sendFile(dirPath)
 })
 

@@ -17,23 +17,11 @@
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-            // fetch('http://localhost:3000/',{
-            //     method: 'GET',
-            //     mode: 'cors',
-            //     cache: 'no-cache',
-            //     credentials: 'same-origin',
-            //     headers: {
-            //     'Content-Type': 'application/json'
-            //     },
-            //     referrerPolicy: 'no-referrer',
-            // })
-            // .then((response) => response.json())
-            // .then((data) => console.log(data));
-
             const texture = new THREE.TextureLoader().load( 'http://localhost:3000/' );
 
             const geometry = new THREE.CylinderGeometry( 3,3, 4, 6 );
             const material = new THREE.MeshLambertMaterial ( {map: texture} );
+
             const cylinder1 = new THREE.Mesh( geometry, material );
 
             cylinder1.rotation.x = 90*0.0174532925
@@ -52,7 +40,7 @@
             cylinder3.rotation.z = 90*0.0174532925 
             cylinder3.position.x = 5
 
-            const light = new THREE.PointLight( 0xffffff, 1 );
+            const light = new THREE.PointLight( 0xffffff, 2 );
             light.position.set( 10, 10, 10 );
             scene.add( light );
 
@@ -66,17 +54,38 @@
 			camera.position.y = 1;
             camera.rotation.x = -5*0.0174532925 
 
+            let rollSlots = false
+
 			function animate() {
 				requestAnimationFrame( animate );
 
 				renderer.render( scene, camera );
-				cylinder1.rotation.x += 0.01;
-                cylinder2.rotation.x += 0.02;
-                cylinder3.rotation.x += 0.005;
+				
+                document.addEventListener('mousedown', onMouseDown, false);
 
+                if(rollSlots) {
+                    cylinder1.rotation.x += 0.01;
+                    cylinder2.rotation.x += 0.02;
+                    cylinder3.rotation.x += 0.005;
+                }
 			};
 
+            function roll() {
+                if(!rollSlots){
+                    rollSlots = true
+                setTimeout(function () {
+                    rollSlots = false
+                }, 3000);
+                }                                
+            }
+
 			animate();
+
+            function onMouseDown(e) {
+                roll()
+            }
+            
 		</script>
+        <button id="PAW" class="pauseButton">Pause</button>
 	</body>
 </html>
