@@ -1,29 +1,29 @@
-import React from 'react'
-import { useState, useEffect, useRef } from 'react'
-import * as THREE from 'three'
-import { Canvas, useFrame } from '@react-three/fiber'
+import React, { useRef, useState, useEffect } from 'react'
+import { Canvas, useFrame, useLoader, useThree  } from '@react-three/fiber'
+import { TextureLoader } from 'three/src/loaders/TextureLoader'
+
 
 function Box(props) {
-    // This reference will give us direct access to the mesh
-    const mesh = useRef()
-    // Set up state for the hovered and active state
-    const [hovered, setHover] = useState(false)
-    const [active, setActive] = useState(false)
-    // Rotate mesh every frame, this is outside of React without overhead
-    useFrame(() => (mesh.current.rotation.x += 0.01))
+    const texture = useLoader(TextureLoader, 'http://localhost:8080/')
+
+    const ref = useRef()
+    const [hovered, hover] = useState(false)
+    const [clicked, click] = useState(false)
+    useFrame((state, delta) => (ref.current.rotation.x += 0.01))
 
     return (
-        <mesh
-            {...props}
-            ref={mesh}
-            scale={active ? 1.5 : 1}
-            onClick={(event) => setActive(!active)}
-            onPointerOver={(event) => setHover(true)}
-            onPointerOut={(event) => setHover(false)}
-        >
-            <boxGeometry args={[1, 2, 3]} />
-            <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-        </mesh>
+      <mesh
+        {...props}
+        ref={ref}
+        scale={clicked ? 1.5 : 1}
+        onClick={(event) => click(!clicked)}
+        onPointerOver={(event) => hover(true)}
+        onPointerOut={(event) => hover(false)}
+        rotation={[Math.PI/2,0,Math.PI/2]}
+    >
+        <cylinderGeometry args={[2,2,2,6]}/>
+        <meshStandardMaterial map={texture} />
+      </mesh>
     )
 }
 
@@ -33,11 +33,18 @@ export const Slots = () => {
     }, [])
 
     return (
-        <Canvas>
-            <ambientLight />
-            <pointLight position={[10, 10, 10]} />
-            <Box position={[-1.2, 0, 0]} />
-            <Box position={[1.2, 0, 0]} />
+        <div style={{ 
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: "50vh"}}
+        >
+            <Canvas camera={{ fov: 90, position: [0, 7, 0] } }>
+            <ambientLight intensity={0.5}/>
+            <Box position={[-5, 0, 0]}/>
+            <Box position={[0, 0, 0]}/>
+            <Box position={[5, 0, 0]}/>
         </Canvas>
+        </div>
     )
 }
