@@ -11,10 +11,24 @@ function Slot(props) {
 
     const ref = useRef()
 
-    useFrame((state, delta) => (ref.current.rotation.x += speed * Math.random()))
+    const [clicked, click] = useState(false)
+
+    useFrame(() => {
+        if (rollSlots) {
+            ref.current.rotation.x += speed * Math.random()
+        } else {
+            ref.current.rotation.x = Math.round(ref.current.rotation.x)
+        }
+    })
 
     return (
-        <mesh {...props} ref={ref} rotation={[Math.PI / 2, 0, Math.PI / 2]}>
+        <mesh
+            {...props}
+            scale={clicked ? 1.5 : 1}
+            onClick={(event) => click(!clicked)}
+            ref={ref}
+            rotation={[Math.PI / 2, 0, Math.PI / 2]}
+        >
             <cylinderGeometry args={[3, 3, 3, 6]} />
             <meshStandardMaterial map={texture} />
         </mesh>
