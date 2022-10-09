@@ -11,7 +11,7 @@ function Slot(props) {
 
     const ref = useRef()
 
-    useFrame((state, delta) => (ref.current.rotation.x += speed))
+    useFrame((state, delta) => (ref.current.rotation.x += speed * Math.random()))
 
     return (
         <mesh {...props} ref={ref} rotation={[Math.PI / 2, 0, Math.PI / 2]}>
@@ -24,9 +24,9 @@ function Slot(props) {
 function canvasHandleEvent(event) {
     if (event.type === 'mousedown' && !rollSlots) {
         rollSlots = true
-        speed = 0.01
+        speed = 0.1
         setTimeout(function () {
-            speed = 0.005
+            speed = 0.02
             setTimeout(function () {
                 rollSlots = false
                 speed = 0.0
