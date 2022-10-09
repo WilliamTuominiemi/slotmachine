@@ -2,30 +2,44 @@ import React, { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useLoader, useThree  } from '@react-three/fiber'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 
+let rollSlots = false;
+
+let speed = 0.00
 
 function Box(props) {
     const texture = useLoader(TextureLoader, 'http://localhost:8080/')
 
     const ref = useRef()
-    const [hovered, hover] = useState(false)
-    const [clicked, click] = useState(false)
-    useFrame((state, delta) => (ref.current.rotation.x += 0.01))
+
+    useFrame((state, delta) => (
+        ref.current.rotation.x += speed
+    ))
 
     return (
       <mesh
         {...props}
         ref={ref}
-        scale={clicked ? 1.5 : 1}
-        onClick={(event) => click(!clicked)}
-        onPointerOver={(event) => hover(true)}
-        onPointerOut={(event) => hover(false)}
         rotation={[Math.PI/2,0,Math.PI/2]}
     >
-        <cylinderGeometry args={[2,2,2,6]}/>
+        <cylinderGeometry args={[3,3,3,6]}/>
         <meshStandardMaterial map={texture} />
       </mesh>
     )
 }
+
+function canvasHandleEvent (event) {
+    if (event.type === "mousedown" && !rollSlots) {
+        rollSlots = true
+        speed = 0.01
+        setTimeout(function () {
+            speed = 0.005
+            setTimeout(function () {
+                rollSlots = false
+                speed = 0.00
+            }, 1000);     
+        }, 2000);
+    }
+}  
 
 export const Slots = () => {
     useEffect(() => {
@@ -39,12 +53,12 @@ export const Slots = () => {
             justifyContent: 'center',
             height: "50vh"}}
         >
-            <Canvas camera={{ fov: 90, position: [0, 7, 0] } }>
-            <ambientLight intensity={0.5}/>
-            <Box position={[-5, 0, 0]}/>
-            <Box position={[0, 0, 0]}/>
-            <Box position={[5, 0, 0]}/>
-        </Canvas>
+            <Canvas camera={{ fov: 90, position: [0, 7, 0] } } onMouseDown={ canvasHandleEvent }>
+                <ambientLight intensity={0.5}/>
+                <Box position={[-5, 0, 0]}/>
+                <Box position={[0, 0, 0]}/>
+                <Box position={[5, 0, 0]}/>
+            </Canvas>
         </div>
     )
 }
