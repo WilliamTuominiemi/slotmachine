@@ -47,18 +47,32 @@ export const Slots = () => {
     }, [])
 
     return (
-        <div style={{ 
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: "50vh"}}
-        >
-            <Canvas camera={{ fov: 90, position: [0, 7, 0] } } onMouseDown={ canvasHandleEvent }>
-                <ambientLight intensity={0.5}/>
-                <Box position={[-5, 0, 0]}/>
-                <Box position={[0, 0, 0]}/>
-                <Box position={[5, 0, 0]}/>
-            </Canvas>
+        <div>
+            <div style={{ 
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: "10vh",
+                color: 'white'}}
+            >
+                <h1>Slots</h1>
+
+                <p>: click on the slots to roll</p>
+            </div>
+            <div style={{ 
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: "50vh"}}
+            >
+                <Canvas camera={{ fov: 90, position: [0, 7, 0] } } onMouseDown={ canvasHandleEvent }>
+                    <ambientLight intensity={0.5}/>
+                    <Box position={[-5, 0, 0]}/>
+                    <Box position={[0, 0, 0]}/>
+                    <Box position={[5, 0, 0]}/>
+                </Canvas>
+            </div>
         </div>
+        
     )
 }
