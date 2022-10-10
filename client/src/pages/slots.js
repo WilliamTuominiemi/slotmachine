@@ -12,11 +12,9 @@ function Slot(props) {
 
     const ref = useRef()
 
-    const [clicked, click] = useState(false)
-
     useFrame(() => {
         if (rollSlots) {
-            ref.current.rotation.x += speed + Math.random() * 0.3
+            ref.current.rotation.x += speed + Math.random() * 0.1
             if (ref.current.rotation.x >= 2 * Math.PI) ref.current.rotation.x = 0
         } else {
             if (stopping) {
@@ -34,8 +32,6 @@ function Slot(props) {
     return (
         <mesh
             {...props}
-            scale={clicked ? 1.5 : 1}
-            onClick={(event) => click(!clicked)}
             ref={ref}
             rotation={[Math.PI / 2, 0, Math.PI / 2]}
         >
@@ -49,11 +45,11 @@ function canvasHandleEvent(event) {
     if (event.type === 'mousedown' && !rollSlots && !stopping) {
         rollSlots = true
         stopping = false
-        speed = 0.05
+        speed = 0.005
         setTimeout(function () {
             rollSlots = false
             stopping = true
-            speed = 0.01
+            speed = 0.001
             setTimeout(function () {
                 stopping = false
                 speed = 0.0
