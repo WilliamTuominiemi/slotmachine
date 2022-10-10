@@ -3,6 +3,7 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 
 let rollSlots = false
+let stopping = false
 
 let speed = 0.0
 
@@ -15,9 +16,18 @@ function Slot(props) {
 
     useFrame(() => {
         if (rollSlots) {
-            ref.current.rotation.x += speed * Math.random()
+            ref.current.rotation.x += speed + Math.random() * 0.3
+            if (ref.current.rotation.x >= 2 * Math.PI) ref.current.rotation.x = 0
         } else {
-            ref.current.rotation.x = Math.round(ref.current.rotation.x)
+            if (stopping) {
+                if (ref.current.rotation.x < Math.round(ref.current.rotation.x)) {
+                    ref.current.rotation.x += speed
+                } else if (ref.current.rotation.x > Math.round(ref.current.rotation.x)) {
+                    ref.current.rotation.x -= speed
+                }
+            } else {
+                ref.current.rotation.x = Math.round(ref.current.rotation.x)
+            }
         }
     })
 
@@ -36,13 +46,16 @@ function Slot(props) {
 }
 
 function canvasHandleEvent(event) {
-    if (event.type === 'mousedown' && !rollSlots) {
+    if (event.type === 'mousedown' && !rollSlots && !stopping) {
         rollSlots = true
-        speed = 0.1
+        stopping = false
+        speed = 0.05
         setTimeout(function () {
-            speed = 0.02
+            rollSlots = false
+            stopping = true
+            speed = 0.01
             setTimeout(function () {
-                rollSlots = false
+                stopping = false
                 speed = 0.0
             }, 1000)
         }, 2000)
