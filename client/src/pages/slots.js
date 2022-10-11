@@ -54,11 +54,11 @@ function canvasHandleEvent(event) {
         setTimeout(function () {
             rollSlots = false
             stopping = true
-            speed = 0.001
+            speed = 0.005
             setTimeout(function () {
                 stopping = false
                 speed = 0.0
-            }, 1000)
+            }, 2000)
         }, 2000)
     }
 }
