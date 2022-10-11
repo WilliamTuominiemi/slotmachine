@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import Texture from '../textures/texture1.png'
 
 let rollSlots = false
 let randomizing = false
@@ -9,7 +10,7 @@ let stopping = false
 let speed = 0.0
 
 function Slot(props) {
-    const texture = useLoader(TextureLoader, 'http://localhost:8080/')
+    const texture = useLoader(TextureLoader, Texture)
 
     const ref = useRef()
 
