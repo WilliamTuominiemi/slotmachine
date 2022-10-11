@@ -3,6 +3,7 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 
 let rollSlots = false
+let randomizing = false
 let stopping = false
 
 let speed = 0.0
@@ -14,7 +15,11 @@ function Slot(props) {
 
     useFrame(() => {
         if (rollSlots) {
+            if (randomizing) {
+                ref.current.rotation.x += speed + Math.random()
+            }
             ref.current.rotation.x += speed + Math.random() * 0.1
+
             if (ref.current.rotation.x >= 2 * Math.PI) ref.current.rotation.x = 0
         } else {
             if (stopping) {
@@ -30,11 +35,7 @@ function Slot(props) {
     })
 
     return (
-        <mesh
-            {...props}
-            ref={ref}
-            rotation={[Math.PI / 2, 0, Math.PI / 2]}
-        >
+        <mesh {...props} ref={ref} rotation={[Math.PI / 2, 0, Math.PI / 2]}>
             <cylinderGeometry args={[3, 3, 3, 6]} />
             <meshStandardMaterial map={texture} />
         </mesh>
@@ -44,8 +45,12 @@ function Slot(props) {
 function canvasHandleEvent(event) {
     if (event.type === 'mousedown' && !rollSlots && !stopping) {
         rollSlots = true
+        randomizing = true
         stopping = false
         speed = 0.005
+        setTimeout(function () {
+            randomizing = false
+        }, 500)
         setTimeout(function () {
             rollSlots = false
             stopping = true
