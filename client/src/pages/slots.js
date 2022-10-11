@@ -3,6 +3,9 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import Texture from '../textures/texture1.png'
 
+import { io, Socket } from 'socket.io-client'
+const socket = io('http://localhost:8080')
+
 let rollSlots = false
 let randomizing = false
 let stopping = false
@@ -66,7 +69,9 @@ function canvasHandleEvent(event) {
 
 export const Slots = () => {
     useEffect(() => {
-        console.log('yeah')
+        socket.on('connect', () => {
+            console.log(`You connected with id: ${socket.id}`)
+        })
     }, [])
 
     return (
