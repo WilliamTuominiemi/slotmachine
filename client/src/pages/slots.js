@@ -34,6 +34,7 @@ function Slot(props) {
                 }
             } else {
                 ref.current.rotation.x = Math.round(ref.current.rotation.x)
+                socket.emit('slot-rotation', ref.current.rotation.x )
             }
         }
     })
