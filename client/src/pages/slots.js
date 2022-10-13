@@ -12,7 +12,12 @@ let stopping = false
 
 let speed = 0.0
 
+let i = 0
+
 function Slot(props) {
+    const slotNumber = i
+    i++
+
     const texture = useLoader(TextureLoader, Texture)
 
     const ref = useRef()
@@ -34,7 +39,8 @@ function Slot(props) {
                 }
             } else {
                 ref.current.rotation.x = Math.round(ref.current.rotation.x)
-                socket.emit('slot-rotation', ref.current.rotation.x )
+
+                socket.emit('slot-rotation', { slot: slotNumber, rotation: ref.current.rotation.x })
             }
         }
     })
